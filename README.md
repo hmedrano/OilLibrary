@@ -8,12 +8,14 @@ Office of Response and Restoration (**ORR**), Emergency Response Division.
 ## Installation Instructions ##
 
 - cd <directory containing this file>
+- pip install -r requeriments.txt  
 
-- $venv/bin/python setup.py develop
+
+- python setup.py develop
 
 or
 
-- $venv/bin/python setup.py install
+- python setup.py install
 
 
 ## Using the package ##
@@ -23,7 +25,7 @@ get_oil() and get_oil_props():
 
 ```
 > ipython
-Python 2.7.11 |Anaconda 2.4.1 (x86_64)| (default, Dec  6 2015, 18:57:58) 
+Python 3.6.5 |Anaconda, Inc.| (default, Apr 29 2018, 16:14:56) 
 Type "copyright", "credits" or "license" for more information.
 
 In [1]: from oil_library import get_oil
@@ -40,7 +42,7 @@ SQLAlchemy.  So one can do more sophisticated things like:
 
 ```
 > ipython
-Python 2.7.11 |Anaconda 2.4.1 (x86_64)| (default, Dec  6 2015, 18:57:58) 
+Python 3.6.5 |Anaconda, Inc.| (default, Apr 29 2018, 16:14:56) 
 Type "copyright", "credits" or "license" for more information.
 
 In [1]: from oil_library import get_oil, get_oil_props, _get_db_session
