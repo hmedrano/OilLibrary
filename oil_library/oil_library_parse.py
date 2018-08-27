@@ -54,7 +54,11 @@ class OilLibraryFile(object):
         self.file_columns_lu = None
         self.num_columns = None
 
-        self.fileobj = open(name, 'rU', encoding='ISO-8859-1')
+        try:
+            self.fileobj = open(name, 'rU', encoding='ISO-8859-1')
+        except Exception:
+            self.fileobj = open(name, 'rU')
+            
         self.field_delim = field_delim
 
         self.__version__ = self.readline()
@@ -104,6 +108,7 @@ class OilLibraryFile(object):
         if len(line) > 0:
             try:
                 row = line.decode('utf-8')
+                row = row.encode('utf-8')
             except Exception:
                 # If we fail to encode in utf-8, then it is possible that
                 # our file contains mac_roman characters of which some are
