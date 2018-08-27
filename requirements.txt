@@ -12,7 +12,6 @@ numpy
 scipy
 SQLAlchemy
 zope.sqlalchemy
-awesome-slugify
 pytest
 repoze.lru
 git+https://github.com/NOAA-ORR-ERD/PyNUCOS.git#egg=unit_conversion

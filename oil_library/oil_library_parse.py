@@ -54,7 +54,7 @@ class OilLibraryFile(object):
         self.file_columns_lu = None
         self.num_columns = None
 
-        self.fileobj = open(name, 'rU')
+        self.fileobj = open(name, 'rU', encoding='ISO-8859-1')
         self.field_delim = field_delim
 
         self.__version__ = self.readline()
@@ -91,8 +91,8 @@ class OilLibraryFile(object):
 
     def _set_table_columns(self):
         self.file_columns = self.readline()
-        self.file_columns_lu = dict(zip(self.file_columns,
-                                        range(len(self.file_columns))))
+        self.file_columns_lu = dict(list(zip(self.file_columns,
+                                        range(len(self.file_columns)))))
         self.num_columns = len(self.file_columns)
 
     def _parse_row(self, line):
@@ -110,9 +110,12 @@ class OilLibraryFile(object):
                 # out-of-range.
                 # This is probably about the best we can do to anticipate
                 # our file contents.
-                row = line.decode('mac_roman')
-
-            row = row.encode('utf-8')
+                try:
+                    row = line.decode('mac_roman')
+                    row = row.encode('utf-8')
+                except Exception:
+                    row = str(line)
+            
             row = (row.split(self.field_delim))
             row = [c.strip('"') for c in row]
             row = [c if len(c) > 0 else None for c in row]

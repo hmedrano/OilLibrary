@@ -199,7 +199,7 @@ def add_volatile_fractions(imp_rec_obj, oil):
 
 
 def add_distillation_cuts(imp_rec_obj, oil):
-    for T_i, f_evap_i in zip(*imp_rec_obj.normalized_cut_values()):
+    for T_i, f_evap_i in list(zip(*imp_rec_obj.normalized_cut_values())):
         oil.cuts.append(Cut(vapor_temp_k=T_i, fraction=f_evap_i))
 
 
@@ -208,7 +208,7 @@ def add_component_mol_wt(imp_rec_obj, oil):
     mol_wts = imp_rec_obj.component_mol_wt()
     c_types = imp_rec_obj.component_types()
 
-    for T_i, mol_wt_i, c_type in zip(temps, mol_wts, c_types):
+    for T_i, mol_wt_i, c_type in list(zip(temps, mol_wts, c_types)):
         oil.molecular_weights.append(MolecularWeight(sara_type=c_type,
                                                      g_mol=mol_wt_i,
                                                      ref_temp_k=T_i))
@@ -219,7 +219,7 @@ def add_component_mass_fractions(imp_rec_obj, oil):
     fracs = imp_rec_obj.component_mass_fractions()
     c_types = imp_rec_obj.component_types()
 
-    for T_i, f_i, c_type in zip(temps, fracs, c_types):
+    for T_i, f_i, c_type in list(zip(temps, fracs, c_types)):
         oil.sara_fractions.append(SARAFraction(sara_type=c_type,
                                                fraction=f_i,
                                                ref_temp_k=T_i))
@@ -237,7 +237,7 @@ def add_component_densities(imp_rec_obj, oil):
 
     densities *= Cf_dens
 
-    for T_i, rho, c_type in zip(temps, densities, c_types):
+    for T_i, rho, c_type in list(zip(temps, densities, c_types)):
         oil.sara_densities.append(SARADensity(sara_type=c_type,
                                               density=rho,
                                               ref_temp_k=T_i))

@@ -55,9 +55,12 @@ def load_database(settings):
             for r in fd.readlines():
                 if len(r) < 10:
                     logger.info('got record: {}'.format(r))
-
-                r = [unicode(f, 'utf-8') if f is not None else f
-                     for f in r]
+                try:
+                    r = [unicode(f, 'utf-8') if f is not None else f
+                         for f in r]
+                except Exception:
+                    r = [str(f) if f is not None else f
+                         for f in r] 
                 add_oil_object(session, fd.file_columns, r)
 
                 if rowcount % 100 == 0:
@@ -85,7 +88,7 @@ def make_db(oillib_files=None, db_file=None, blacklist_file=None):
 
     pck_loc = os.path.dirname(os.path.realpath(__file__))
 
-    print "Building oil database:, installing to: {}".format(pck_loc)
+    print ("Building oil database:, installing to: {}".format(pck_loc))
 
     if not db_file:
         db_file = os.path.join(pck_loc, 'OilLib.db')

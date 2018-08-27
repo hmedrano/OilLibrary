@@ -1,10 +1,6 @@
 
 from collections import defaultdict
-
-from slugify import Slugify
-
-custom_slugify = Slugify(to_lower=True)
-custom_slugify.separator = '_'
+from ../../oil_library.utilities.slugify import slugify
 
 
 def get_oil_column_indexes(xl_sheet):
@@ -64,16 +60,16 @@ def get_row_field_names(xl_sheet):
         if all([(r.value is None) for r in row[:2]]):
             category_name, field_name = None, None
         elif row[0].value is not None:
-            category_name = custom_slugify(row[0].value).lower()
+            category_name = slugify(row[0].value).lower()
             row_prev_name = category_name
             if row[1].value is not None:
-                field_name = custom_slugify(unicode(row[1].value)).lower()
+                field_name = slugify(unicode(row[1].value)).lower()
             else:
                 field_name = None
         else:
             category_name = row_prev_name
             if row[1].value is not None:
-                field_name = custom_slugify(unicode(row[1].value)).lower()
+                field_name = slugify(unicode(row[1].value)).lower()
             else:
                 field_name = None
 

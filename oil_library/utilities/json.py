@@ -1,3 +1,4 @@
+from six import iteritems
 '''
     JSON Oil record utility functions.
 
@@ -19,7 +20,7 @@ class ObjFromDict(object):
             json_obj.densities[0].ref_temp_k
     '''
     def __init__(self, data):
-        for name, value in data.iteritems():
+        for name, value in iteritems(data):
             setattr(self, name, self._wrap(value))
 
     def _wrap(self, value):

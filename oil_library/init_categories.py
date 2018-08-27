@@ -21,7 +21,7 @@ import logging
 
 import transaction
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
-from slugify import slugify_filename
+from .utilities.slugify import slugify_filename
 
 import unit_conversion as uc
 
@@ -421,8 +421,12 @@ def manually_recategorize_oils(session, settings):
     logger.info('Re-categorizing oils in our blacklist')
     rowcount = 0
     for r in fd.readlines():
-        r = [unicode(f, 'utf-8') if f is not None else f
-             for f in r]
+        try:
+            r = [unicode(f, 'utf-8') if f is not None else f
+                 for f in r]
+        except Exception:
+            r = [str(f) if f is not None else f
+                 for f in r]            
         recategorize_oil(session, fd.file_columns, r)
         rowcount += 1
 
@@ -434,7 +438,7 @@ def manually_recategorize_oils(session, settings):
 def recategorize_oil(session, file_columns, row_data):
     file_columns = [slugify_filename(c).lower()
                     for c in file_columns]
-    row_dict = dict(zip(file_columns, row_data))
+    row_dict = dict(list(zip(file_columns, row_data)))
 
     try:
         oil_obj = (session.query(Oil)

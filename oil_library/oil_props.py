@@ -11,7 +11,13 @@ object used to initialize and OilProps object
 Not sure at present if this needs to be serializable?
 '''
 import copy
-from itertools import groupby, chain, izip_longest
+from itertools import groupby, chain
+
+try:
+  # Python 3
+  from itertools import zip_longest
+except ImportError:
+  from itertools import izip_longest as zip_longest
 
 from repoze.lru import lru_cache
 import numpy as np
@@ -320,7 +326,7 @@ class OilProps(OilWithEstimation):
 
         items = []
         sum_frac = 0.
-        for comp, dens, mol_wt in izip_longest(all_comp, all_dens, all_mw):
+        for comp, dens, mol_wt in zip_longest(all_comp, all_dens, all_mw):
             if (comp.ref_temp_k != comp.ref_temp_k or
                     comp.sara_type != comp.sara_type):
                 msg = "mismatch in sara_fractions and sara_densities tables"

@@ -5,7 +5,6 @@ channels:
 - defaults
 dependencies:
 - unit_conversion=2.5.5=py27_0
-- awesome-slugify=1.6.5=py_2
 - blas=1.1=openblas
 - ca-certificates=2017.7.27.1=0
 - certifi=2017.7.27.1=py27_0

@@ -1,10 +1,10 @@
 
 from ec_models import ECCut
 
-from ec_xl_parse import get_oil_properties_by_category, custom_slugify
+from ec_xl_parse import get_oil_properties_by_category
 from ec_oil_props import get_oil_weathering
 from ec_oil_misc import celcius_to_kelvin
-
+from ../../oil_library.utilities.slugify import slugify
 
 def get_oil_distillation_cuts(oil_columns, field_indexes):
     '''
@@ -75,7 +75,7 @@ def build_cuts_from_dist_data(prop_names, values, weathering):
 
     # The only labels we care about are the percent value labels
     for frac in ([(p / 100.0) for p in range(5, 100, 5)] + [1]):
-        label = custom_slugify('{:0}'.format(frac))
+        label = slugify('{:0}'.format(frac))
         vapor_temp_c = dist_data[label]
         cuts.append(build_cut_kwargs(vapor_temp_c, frac, weathering))
 

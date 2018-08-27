@@ -12,7 +12,6 @@ requirements:
     - sqlalchemy
     - transaction
     - zope.sqlalchemy
-    - awesome-slugify
     - unit_conversion
     - pytest
   run:
@@ -21,7 +20,6 @@ requirements:
     - sqlalchemy
     - transaction
     - zope.sqlalchemy
-    - awesome-slugify
     - pytest
     - unit_conversion
 
