@@ -19,7 +19,11 @@ try:
 except ImportError:
   from itertools import izip_longest as zip_longest
 
-from repoze.lru import lru_cache
+try:
+    from functools import lru_cache  # it's built-in on py3
+except ImportError:
+    from backports.functools_lru_cache import lru_cache  # needs backports for py2
+
 import numpy as np
 
 from .models import Oil
@@ -188,24 +192,29 @@ class OilProps(OilWithEstimation):
     def component_types(self):
         return self._sara['type']
 
-    @lru_cache(2)
+    
     def vapor_pressure(self, temp, atmos_pressure=101325.0):
         '''
         water_temp and boiling point units are Kelvin
         returns the vapor_pressure in SI units (Pascals)
         '''
-        D_Zb = 0.97
-        R_cal = 1.987  # calories
+        
+        @lru_cache(2)
+        def cached_vapor_pressure(temp, atmos_pressure):
+            D_Zb = 0.97
+            R_cal = 1.987  # calories
 
-        D_S = 8.75 + 1.987 * np.log(self.boiling_point)
-        C_2i = 0.19 * self.boiling_point - 18
+            D_S = 8.75 + 1.987 * np.log(self.boiling_point)
+            C_2i = 0.19 * self.boiling_point - 18
 
-        var = 1. / (self.boiling_point - C_2i) - 1. / (temp - C_2i)
-        ln_Pi_Po = (D_S * (self.boiling_point - C_2i) ** 2 /
-                    (D_Zb * R_cal * self.boiling_point) * var)
-        Pi = np.exp(ln_Pi_Po) * atmos_pressure
+            var = 1. / (self.boiling_point - C_2i) - 1. / (temp - C_2i)
+            ln_Pi_Po = (D_S * (self.boiling_point - C_2i) ** 2 /
+                        (D_Zb * R_cal * self.boiling_point) * var)
+            Pi = np.exp(ln_Pi_Po) * atmos_pressure
 
-        return Pi
+            return Pi
+        
+        return cached_vapor_pressure(temp,atmos_pressure)
 
     def tojson(self):
         '''
@@ -226,7 +235,8 @@ class OilProps(OilWithEstimation):
         '''
         cannot just do self.__dict__ == other.__dict__ since
         '''
-        for key, val in self.__dict__.iteritems():
+        # for key, val in self.__dict__.iteritems():
+        for key, val in self.__dict__.items():
             o_val = other.__dict__[key]
 
             if isinstance(val, np.ndarray):

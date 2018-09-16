@@ -134,7 +134,8 @@ class ImportedRecord(Base):
         dimensional tabular format.
     '''
     __tablename__ = 'imported_records'
-    __table_args__ = (UniqueConstraint('oil_name', 'location', 'field_name'),
+    __table_args__ = (UniqueConstraint('oil_name', 'location', 'field_name',
+                                       'reference_date'),
                       )
 
     id = Column(Integer, primary_key=True)
@@ -146,6 +147,7 @@ class ImportedRecord(Base):
     location = Column(String(64))
     field_name = Column(String(64))
     reference = Column(Text)
+    reference_date = Column(String(22))
     api = Column(Float(53))
     pour_point_min_k = Column(Float(53))
     pour_point_max_k = Column(Float(53))
