@@ -12,6 +12,7 @@ Not sure at present if this needs to be serializable?
 '''
 import copy
 from itertools import groupby, chain
+from six import iteritems
 
 try:
   # Python 3
@@ -234,9 +235,8 @@ class OilProps(OilWithEstimation):
     def _compare__dict(self, other):
         '''
         cannot just do self.__dict__ == other.__dict__ since
-        '''
-        # for key, val in self.__dict__.iteritems():
-        for key, val in self.__dict__.items():
+        '''        
+        for key, val in iteritems(self.__dict__):
             o_val = other.__dict__[key]
 
             if isinstance(val, np.ndarray):
